@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, ArrowUp, ArrowDown, ExternalLink } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const TopExposuresTable = () => {
   const [sortField, setSortField] = useState('exposure');
@@ -12,6 +13,7 @@ const TopExposuresTable = () => {
   const data = [
     {
       customer: 'XYZ Corporation',
+      customerId: 'xyz-corporation',
       exposure: 4000000,
       rating: 'BBB',
       pd: 1.2,
@@ -22,6 +24,7 @@ const TopExposuresTable = () => {
     },
     {
       customer: 'ABC Industries Ltd',
+      customerId: 'abc-industries',
       exposure: 2500000,
       rating: 'A',
       pd: 0.8,
@@ -32,6 +35,7 @@ const TopExposuresTable = () => {
     },
     {
       customer: 'Global Services Inc',
+      customerId: 'global-services',
       exposure: 1800000,
       rating: 'BB',
       pd: 2.1,
@@ -224,8 +228,10 @@ const TopExposuresTable = () => {
               {sortedData.map((row, index) => (
                 <tr key={index} className="border-b hover:bg-gray-50 transition-colors">
                   <td className="py-3 px-2">
-                    <div className="font-medium text-gray-900">{row.customer}</div>
-                    <div className="text-sm text-gray-500">{row.region}</div>
+                    <Link to={`/customer/${row.customerId}`} className="block hover:bg-gray-50 transition-colors">
+                      <div className="font-medium text-gray-900 hover:text-blue-600">{row.customer}</div>
+                      <div className="text-sm text-gray-500">{row.region}</div>
+                    </Link>
                   </td>
                   <td className="py-3 px-2 text-right font-mono">
                     {formatCurrency(row.exposure)}
