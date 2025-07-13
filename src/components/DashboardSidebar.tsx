@@ -2,6 +2,7 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { BarChart3, Users, AlertTriangle, Settings, Home, FileText, TrendingUp } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 interface DashboardSidebarProps {
   isOpen: boolean;
@@ -9,13 +10,15 @@ interface DashboardSidebarProps {
 }
 
 const DashboardSidebar = ({ isOpen, onToggle }: DashboardSidebarProps) => {
+  const location = useLocation();
+  
   const navigation = [
-    { name: 'Dashboard', icon: Home, href: '#', current: true },
-    { name: 'Portfolio', icon: BarChart3, href: '#', current: false },
+    { name: 'Dashboard', icon: Home, href: '/', current: location.pathname === '/' },
+    { name: 'Portfolio', icon: BarChart3, href: '/portfolio', current: location.pathname === '/portfolio' },
     { name: 'Customers', icon: Users, href: '#', current: false },
+    { name: 'Compare', icon: TrendingUp, href: '/compare', current: location.pathname === '/compare' },
     { name: 'Alerts', icon: AlertTriangle, href: '#', current: false },
     { name: 'Reports', icon: FileText, href: '#', current: false },
-    { name: 'Analytics', icon: TrendingUp, href: '#', current: false },
     { name: 'Settings', icon: Settings, href: '#', current: false },
   ];
 
@@ -47,9 +50,12 @@ const DashboardSidebar = ({ isOpen, onToggle }: DashboardSidebarProps) => {
                   !isOpen && "justify-center px-2",
                   item.current && "bg-slate-800"
                 )}
+                asChild
               >
-                <Icon className={cn("h-5 w-5", isOpen && "mr-3")} />
-                {isOpen && <span>{item.name}</span>}
+                <Link to={item.href}>
+                  <Icon className={cn("h-5 w-5", isOpen && "mr-3")} />
+                  {isOpen && <span>{item.name}</span>}
+                </Link>
               </Button>
             );
           })}
