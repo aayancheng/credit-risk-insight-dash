@@ -12,67 +12,59 @@ const TopExposuresTable = () => {
 
   const data = [
     {
-      customer: 'XYZ Corporation',
-      customerId: 'xyz-corporation',
-      exposure: 4000000,
-      rating: 'BBB',
-      pd: 1.2,
-      lgd: 40,
-      expectedLoss: 19200,
-      sector: 'Technology',
-      region: 'North America'
-    },
-    {
-      customer: 'ABC Industries Ltd',
-      customerId: 'abc-industries',
-      exposure: 2500000,
-      rating: 'A',
-      pd: 0.8,
-      lgd: 35,
-      expectedLoss: 7000,
-      sector: 'Manufacturing',
-      region: 'Europe'
-    },
-    {
-      customer: 'Global Services Inc',
-      customerId: 'global-services',
-      exposure: 1800000,
-      rating: 'BB',
-      pd: 2.1,
-      lgd: 45,
-      expectedLoss: 17010,
-      sector: 'Services',
+      customer: 'Mining Resources Corp',
+      customerId: 'mining-resources',
+      exposure: 56000000,
+      rating: 'BB+',
+      pd: 3.5,
+      lgd: 41,
+      expectedLoss: 803600,
+      sector: 'Mining',
       region: 'Asia Pacific'
     },
     {
-      customer: 'Tech Solutions Ltd',
-      exposure: 1500000,
-      rating: 'BBB',
-      pd: 1.5,
-      lgd: 40,
-      expectedLoss: 9000,
-      sector: 'Technology',
-      region: 'North America'
-    },
-    {
-      customer: 'Energy Corp',
-      exposure: 1200000,
-      rating: 'B',
-      pd: 3.2,
-      lgd: 50,
-      expectedLoss: 19200,
-      sector: 'Energy',
-      region: 'North America'
-    },
-    {
-      customer: 'Manufacturing Co',
-      exposure: 1000000,
+      customer: 'Financial Partners LLC',
+      customerId: 'financial-partners',
+      exposure: 52000000,
       rating: 'A',
-      pd: 0.9,
-      lgd: 35,
-      expectedLoss: 3150,
-      sector: 'Manufacturing',
+      pd: 1.2,
+      lgd: 28,
+      expectedLoss: 174720,
+      sector: 'Financial',
+      region: 'North America'
+    },
+    {
+      customer: 'Telecom Networks PLC',
+      customerId: 'telecom-networks',
+      exposure: 48000000,
+      rating: 'BBB+',
+      pd: 1.9,
+      lgd: 33,
+      expectedLoss: 301320,
+      sector: 'Telecommunications',
       region: 'Europe'
+    },
+    {
+      customer: 'XYZ Corporation',
+      customerId: 'xyz-corporation',
+      exposure: 45000000,
+      rating: 'BBB',
+      pd: 2.1,
+      lgd: 35,
+      expectedLoss: 330750,
+      sector: 'Manufacturing',
+      region: 'North America'
+    },
+    {
+      customer: 'Real Estate Developers',
+      customerId: 'real-estate-dev',
+      exposure: 42000000,
+      rating: 'B',
+      pd: 7.2,
+      lgd: 52,
+      expectedLoss: 1574400,
+      sector: 'Real Estate',
+      region: 'North America'
     }
   ];
 

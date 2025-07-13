@@ -14,7 +14,7 @@ import RiskHeatmap from "@/components/RiskHeatmap";
 import TopExposuresTable from "@/components/TopExposuresTable";
 
 const Index = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedRating, setSelectedRating] = useState("all");
   const [selectedSector, setSelectedSector] = useState("all");
   const [selectedRegion, setSelectedRegion] = useState("all");

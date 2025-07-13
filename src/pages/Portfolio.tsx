@@ -16,7 +16,7 @@ import {
 import { Search, Download, Filter } from "lucide-react";
 
 const Portfolio = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
   // Comprehensive portfolio data with 20 clients
@@ -564,11 +564,11 @@ const Portfolio = () => {
                   </TableHeader>
                   <TableBody>
                     {filteredData.map((client) => (
-                      <TableRow key={client.id} className="hover:bg-muted/50">
+                      <TableRow key={client.id} className="hover:bg-muted/50 cursor-pointer">
                         <TableCell className="font-medium">
                           <Link 
                             to={`/customer/${client.id}`}
-                            className="text-primary hover:underline"
+                            className="text-primary hover:underline block"
                           >
                             {client.name}
                           </Link>

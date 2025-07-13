@@ -1,7 +1,7 @@
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { BarChart3, Users, AlertTriangle, Settings, Home, FileText, TrendingUp } from "lucide-react";
+import { BarChart3, Users, AlertTriangle, Settings, Home, FileText, TrendingUp, Menu } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 interface DashboardSidebarProps {
@@ -29,12 +29,20 @@ const DashboardSidebar = ({ isOpen, onToggle }: DashboardSidebarProps) => {
     )}>
       <div className="flex h-full flex-col">
         {/* Logo */}
-        <div className="flex h-16 items-center justify-center border-b border-slate-800">
+        <div className="flex h-16 items-center justify-between border-b border-slate-800 px-4">
           {isOpen ? (
             <h2 className="text-xl font-bold">CreditAnalytics</h2>
           ) : (
             <BarChart3 className="h-8 w-8" />
           )}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onToggle}
+            className="text-white hover:bg-slate-800"
+          >
+            <Menu className="h-5 w-5" />
+          </Button>
         </div>
 
         {/* Navigation */}

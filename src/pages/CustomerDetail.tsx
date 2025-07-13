@@ -8,67 +8,87 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 const CustomerDetail = () => {
   const { customerId } = useParams();
   
-  // Mock data - would come from API based on customerId
+  // Mock data - would come from API based on customerId - expanded to include all 20 customers
   const customerData = {
     'xyz-corporation': {
-      name: 'XYZ Corporation',
-      exposure: 4000000,
-      rating: 'BBB',
-      pd: 1.2,
-      lgd: 40,
-      expectedLoss: 19200,
-      sector: 'Technology',
-      region: 'North America',
-      utilization: 75,
-      limit: 5000000,
-      lastReview: '2025-06-15',
-      ratingTrend: -1, // -1 for downgrade, 0 for stable, 1 for upgrade
-      financialMetrics: {
-        currentRatio: 2.1,
-        debtToEquity: 0.45,
-        returnOnEquity: 12.5,
-        interestCoverage: 4.2
-      }
+      name: 'XYZ Corporation', exposure: 45000000, rating: 'BBB', pd: 2.1, lgd: 35.0, expectedLoss: 330750, sector: 'Manufacturing', region: 'North America', utilization: 72, limit: 62500000, lastReview: '2025-06-15', ratingTrend: -1,
+      financialMetrics: { currentRatio: 1.8, debtToEquity: 0.65, returnOnEquity: 15.2, interestCoverage: 5.8 }
     },
     'abc-industries': {
-      name: 'ABC Industries Ltd',
-      exposure: 2500000,
-      rating: 'A',
-      pd: 0.8,
-      lgd: 35,
-      expectedLoss: 7000,
-      sector: 'Manufacturing',
-      region: 'Europe',
-      utilization: 60,
-      limit: 3000000,
-      lastReview: '2025-05-20',
-      ratingTrend: 0,
-      financialMetrics: {
-        currentRatio: 2.8,
-        debtToEquity: 0.32,
-        returnOnEquity: 15.2,
-        interestCoverage: 6.1
-      }
+      name: 'ABC Industries', exposure: 32000000, rating: 'A-', pd: 1.5, lgd: 30.0, expectedLoss: 144000, sector: 'Technology', region: 'North America', utilization: 58, limit: 55172413, lastReview: '2025-05-20', ratingTrend: 0,
+      financialMetrics: { currentRatio: 2.1, debtToEquity: 0.45, returnOnEquity: 18.7, interestCoverage: 8.2 }
     },
     'global-services': {
-      name: 'Global Services Inc',
-      exposure: 1800000,
-      rating: 'BB',
-      pd: 2.1,
-      lgd: 45,
-      expectedLoss: 17010,
-      sector: 'Services',
-      region: 'Asia Pacific',
-      utilization: 85,
-      limit: 2200000,
-      lastReview: '2025-07-01',
-      ratingTrend: -1,
-      financialMetrics: {
-        currentRatio: 1.8,
-        debtToEquity: 0.65,
-        returnOnEquity: 8.9,
-        interestCoverage: 2.8
-      }
+      name: 'Global Services Ltd', exposure: 28000000, rating: 'BB+', pd: 3.8, lgd: 40.0, expectedLoss: 425600, sector: 'Services', region: 'Europe', utilization: 85, limit: 32941176, lastReview: '2025-07-01', ratingTrend: -1,
+      financialMetrics: { currentRatio: 1.5, debtToEquity: 0.82, returnOnEquity: 12.4, interestCoverage: 4.2 }
+    },
+    'tech-innovations': {
+      name: 'Tech Innovations Inc', exposure: 22000000, rating: 'AA-', pd: 0.8, lgd: 25.0, expectedLoss: 44000, sector: 'Technology', region: 'North America', utilization: 42, limit: 52380952, lastReview: '2025-04-10', ratingTrend: 1,
+      financialMetrics: { currentRatio: 2.5, debtToEquity: 0.35, returnOnEquity: 22.1, interestCoverage: 12.5 }
+    },
+    'energy-solutions': {
+      name: 'Energy Solutions Corp', exposure: 38000000, rating: 'BBB+', pd: 1.8, lgd: 32.0, expectedLoss: 218880, sector: 'Energy', region: 'North America', utilization: 68, limit: 55882352, lastReview: '2025-06-28', ratingTrend: 0,
+      financialMetrics: { currentRatio: 1.9, debtToEquity: 0.58, returnOnEquity: 16.8, interestCoverage: 6.8 }
+    },
+    'retail-group': {
+      name: 'Retail Group Holdings', exposure: 15000000, rating: 'B+', pd: 5.2, lgd: 45.0, expectedLoss: 351000, sector: 'Retail', region: 'Europe', utilization: 92, limit: 16304347, lastReview: '2025-03-15', ratingTrend: -1,
+      financialMetrics: { currentRatio: 1.2, debtToEquity: 1.05, returnOnEquity: 9.2, interestCoverage: 2.8 }
+    },
+    'financial-partners': {
+      name: 'Financial Partners LLC', exposure: 52000000, rating: 'A', pd: 1.2, lgd: 28.0, expectedLoss: 174720, sector: 'Financial', region: 'North America', utilization: 55, limit: 94545454, lastReview: '2025-05-12', ratingTrend: 0,
+      financialMetrics: { currentRatio: 2.3, debtToEquity: 0.42, returnOnEquity: 19.8, interestCoverage: 9.5 }
+    },
+    'construction-ltd': {
+      name: 'Construction Ltd', exposure: 26000000, rating: 'BB', pd: 4.5, lgd: 42.0, expectedLoss: 491400, sector: 'Construction', region: 'Asia Pacific', utilization: 88, limit: 29545454, lastReview: '2025-04-20', ratingTrend: -1,
+      financialMetrics: { currentRatio: 1.4, debtToEquity: 0.95, returnOnEquity: 11.2, interestCoverage: 3.5 }
+    },
+    'pharma-research': {
+      name: 'Pharma Research Co', exposure: 41000000, rating: 'A+', pd: 0.9, lgd: 26.0, expectedLoss: 96174, sector: 'Healthcare', region: 'Europe', utilization: 48, limit: 85416666, lastReview: '2025-06-05', ratingTrend: 1,
+      financialMetrics: { currentRatio: 2.8, debtToEquity: 0.38, returnOnEquity: 21.5, interestCoverage: 11.2 }
+    },
+    'automotive-systems': {
+      name: 'Automotive Systems Inc', exposure: 34000000, rating: 'BBB-', pd: 2.8, lgd: 38.0, expectedLoss: 361760, sector: 'Automotive', region: 'North America', utilization: 78, limit: 43589743, lastReview: '2025-03-28', ratingTrend: 0,
+      financialMetrics: { currentRatio: 1.6, debtToEquity: 0.72, returnOnEquity: 13.8, interestCoverage: 4.8 }
+    },
+    'logistics-express': {
+      name: 'Logistics Express Ltd', exposure: 19000000, rating: 'BB-', pd: 6.1, lgd: 48.0, expectedLoss: 556080, sector: 'Transportation', region: 'Asia Pacific', utilization: 95, limit: 20000000, lastReview: '2025-02-14', ratingTrend: -1,
+      financialMetrics: { currentRatio: 1.1, debtToEquity: 1.12, returnOnEquity: 7.5, interestCoverage: 2.2 }
+    },
+    'food-beverages': {
+      name: 'Food & Beverages Group', exposure: 29000000, rating: 'A-', pd: 1.6, lgd: 31.0, expectedLoss: 143760, sector: 'Consumer Goods', region: 'Europe', utilization: 62, limit: 46774193, lastReview: '2025-05-30', ratingTrend: 0,
+      financialMetrics: { currentRatio: 2.0, debtToEquity: 0.52, returnOnEquity: 17.2, interestCoverage: 7.2 }
+    },
+    'telecom-networks': {
+      name: 'Telecom Networks PLC', exposure: 48000000, rating: 'BBB+', pd: 1.9, lgd: 33.0, expectedLoss: 301320, sector: 'Telecommunications', region: 'Europe', utilization: 71, limit: 67605633, lastReview: '2025-04-18', ratingTrend: 0,
+      financialMetrics: { currentRatio: 1.7, debtToEquity: 0.68, returnOnEquity: 15.8, interestCoverage: 6.2 }
+    },
+    'mining-resources': {
+      name: 'Mining Resources Corp', exposure: 56000000, rating: 'BB+', pd: 3.5, lgd: 41.0, expectedLoss: 803600, sector: 'Mining', region: 'Asia Pacific', utilization: 82, limit: 68292682, lastReview: '2025-06-22', ratingTrend: -1,
+      financialMetrics: { currentRatio: 1.3, debtToEquity: 0.88, returnOnEquity: 11.8, interestCoverage: 3.8 }
+    },
+    'chemicals-specialty': {
+      name: 'Specialty Chemicals Ltd', exposure: 24000000, rating: 'A', pd: 1.3, lgd: 29.0, expectedLoss: 90480, sector: 'Chemicals', region: 'North America', utilization: 58, limit: 41379310, lastReview: '2025-05-08', ratingTrend: 0,
+      financialMetrics: { currentRatio: 2.2, debtToEquity: 0.48, returnOnEquity: 19.2, interestCoverage: 8.8 }
+    },
+    'real-estate-dev': {
+      name: 'Real Estate Developers', exposure: 42000000, rating: 'B', pd: 7.2, lgd: 52.0, expectedLoss: 1574400, sector: 'Real Estate', region: 'North America', utilization: 98, limit: 42857142, lastReview: '2025-01-25', ratingTrend: -1,
+      financialMetrics: { currentRatio: 0.9, debtToEquity: 1.35, returnOnEquity: 5.2, interestCoverage: 1.8 }
+    },
+    'aerospace-tech': {
+      name: 'Aerospace Technologies', exposure: 36000000, rating: 'A', pd: 1.1, lgd: 27.0, expectedLoss: 106920, sector: 'Aerospace', region: 'North America', utilization: 52, limit: 69230769, lastReview: '2025-04-30', ratingTrend: 1,
+      financialMetrics: { currentRatio: 2.4, debtToEquity: 0.41, returnOnEquity: 20.5, interestCoverage: 10.5 }
+    },
+    'textiles-apparel': {
+      name: 'Textiles & Apparel Co', exposure: 18000000, rating: 'BB', pd: 4.8, lgd: 44.0, expectedLoss: 380160, sector: 'Consumer Goods', region: 'Asia Pacific', utilization: 89, limit: 20224719, lastReview: '2025-03-10', ratingTrend: -1,
+      financialMetrics: { currentRatio: 1.3, debtToEquity: 0.98, returnOnEquity: 10.5, interestCoverage: 3.2 }
+    },
+    'marine-shipping': {
+      name: 'Marine Shipping Lines', exposure: 31000000, rating: 'BBB', pd: 2.5, lgd: 36.0, expectedLoss: 279000, sector: 'Transportation', region: 'Europe', utilization: 76, limit: 40789473, lastReview: '2025-06-12', ratingTrend: 0,
+      financialMetrics: { currentRatio: 1.5, debtToEquity: 0.75, returnOnEquity: 14.2, interestCoverage: 5.2 }
+    },
+    'biotech-innovations': {
+      name: 'Biotech Innovations Inc', exposure: 25000000, rating: 'AA', pd: 0.7, lgd: 24.0, expectedLoss: 42000, sector: 'Healthcare', region: 'North America', utilization: 38, limit: 65789473, lastReview: '2025-05-15', ratingTrend: 1,
+      financialMetrics: { currentRatio: 3.1, debtToEquity: 0.32, returnOnEquity: 24.2, interestCoverage: 15.2 }
     }
   };
 
