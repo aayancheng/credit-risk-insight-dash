@@ -1,81 +1,36 @@
+import { useState } from 'react';
 import { useSearchParams, Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, TrendingUp, TrendingDown } from "lucide-react";
+import { ArrowLeft, TrendingUp, TrendingDown, Plus, X } from "lucide-react";
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ComposedChart } from 'recharts';
+import { CustomerDataService } from '@/services/customerData';
+import { BenchmarkSelector } from '@/components/BenchmarkSelector';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 const CustomerCompare = () => {
   const [searchParams] = useSearchParams();
+  const [selectedBenchmarks, setSelectedBenchmarks] = useState<string[]>([]);
+  const [showBenchmarkSelector, setShowBenchmarkSelector] = useState(false);
+  
   const customer1Id = searchParams.get('customer1') || 'xyz-corporation';
   const customer2Id = searchParams.get('customer2') || 'abc-industries';
   
-  // Mock data - would come from API
-  const customerData = {
-    'xyz-corporation': {
-      name: 'XYZ Corporation',
-      exposure: 4000000,
-      rating: 'BBB',
-      pd: 1.2,
-      lgd: 40,
-      expectedLoss: 19200,
-      sector: 'Technology',
-      region: 'North America',
-      utilization: 75,
-      limit: 5000000,
-      financialMetrics: {
-        currentRatio: 2.1,
-        debtToEquity: 0.45,
-        returnOnEquity: 12.5,
-        interestCoverage: 4.2,
-        profitMargin: 8.5,
-        assetTurnover: 1.2
-      }
-    },
-    'abc-industries': {
-      name: 'ABC Industries Ltd',
-      exposure: 2500000,
-      rating: 'A',
-      pd: 0.8,
-      lgd: 35,
-      expectedLoss: 7000,
-      sector: 'Manufacturing',
-      region: 'Europe',
-      utilization: 60,
-      limit: 3000000,
-      financialMetrics: {
-        currentRatio: 2.8,
-        debtToEquity: 0.32,
-        returnOnEquity: 15.2,
-        interestCoverage: 6.1,
-        profitMargin: 12.1,
-        assetTurnover: 1.5
-      }
-    },
-    'global-services': {
-      name: 'Global Services Inc',
-      exposure: 1800000,
-      rating: 'BB',
-      pd: 2.1,
-      lgd: 45,
-      expectedLoss: 17010,
-      sector: 'Services',
-      region: 'Asia Pacific',
-      utilization: 85,
-      limit: 2200000,
-      financialMetrics: {
-        currentRatio: 1.8,
-        debtToEquity: 0.65,
-        returnOnEquity: 8.9,
-        interestCoverage: 2.8,
-        profitMargin: 6.2,
-        assetTurnover: 1.1
-      }
+  const customer1 = CustomerDataService.getCustomerById(customer1Id);
+  const customer2 = CustomerDataService.getCustomerById(customer2Id);
+  
+  const handleBenchmarkSelect = (benchmarkId: string, benchmarkType: string) => {
+    if (selectedBenchmarks.includes(benchmarkId)) {
+      setSelectedBenchmarks(prev => prev.filter(id => id !== benchmarkId));
+    } else if (selectedBenchmarks.length < 3) {
+      setSelectedBenchmarks(prev => [...prev, benchmarkId]);
     }
   };
 
-  const customer1 = customerData[customer1Id as keyof typeof customerData];
-  const customer2 = customerData[customer2Id as keyof typeof customerData];
+  const removeBenchmark = (benchmarkId: string) => {
+    setSelectedBenchmarks(prev => prev.filter(id => id !== benchmarkId));
+  };
 
   if (!customer1 || !customer2) {
     return <div className="p-6">One or both customers not found</div>;
@@ -156,23 +111,58 @@ const CustomerCompare = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-background p-6">
       <div className="max-w-7xl mx-auto space-y-6">
+        <Breadcrumb />
+        
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <Link to="/">
-              <Button variant="outline" size="sm">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Dashboard
-              </Button>
-            </Link>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Customer Comparison</h1>
-              <p className="text-gray-600">Side-by-side analysis</p>
+              <h1 className="text-3xl font-bold">Customer Comparison</h1>
+              <p className="text-muted-foreground">Advanced benchmarking and analysis</p>
             </div>
           </div>
+          <div className="flex items-center space-x-2">
+            <Button 
+              variant="outline" 
+              onClick={() => setShowBenchmarkSelector(!showBenchmarkSelector)}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Add Benchmarks
+            </Button>
+          </div>
         </div>
+
+        {/* Selected Benchmarks */}
+        {selectedBenchmarks.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Active Benchmarks</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                {selectedBenchmarks.map((benchmarkId) => (
+                  <Badge key={benchmarkId} variant="secondary" className="flex items-center space-x-1">
+                    <span>{benchmarkId}</span>
+                    <button onClick={() => removeBenchmark(benchmarkId)}>
+                      <X className="h-3 w-3" />
+                    </button>
+                  </Badge>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Benchmark Selector */}
+        {showBenchmarkSelector && (
+          <BenchmarkSelector
+            selectedCustomer={customer1?.name || ''}
+            onBenchmarkSelect={handleBenchmarkSelect}
+            selectedBenchmarks={selectedBenchmarks}
+          />
+        )}
 
         {/* Customer Headers */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
