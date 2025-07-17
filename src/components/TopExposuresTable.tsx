@@ -5,68 +5,28 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpDown, ArrowUp, ArrowDown, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { CustomerDataService } from "@/services/customerData";
 
 const TopExposuresTable = () => {
   const [sortField, setSortField] = useState('exposure');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
-  const data = [
-    {
-      customer: 'Mining Resources Corp',
-      customerId: 'mining-resources',
-      exposure: 56000000,
-      rating: 'BB+',
-      pd: 3.5,
-      lgd: 41,
-      expectedLoss: 803600,
-      sector: 'Mining',
-      region: 'Asia Pacific'
-    },
-    {
-      customer: 'Financial Partners LLC',
-      customerId: 'financial-partners',
-      exposure: 52000000,
-      rating: 'A',
-      pd: 1.2,
-      lgd: 28,
-      expectedLoss: 174720,
-      sector: 'Financial',
-      region: 'North America'
-    },
-    {
-      customer: 'Telecom Networks PLC',
-      customerId: 'telecom-networks',
-      exposure: 48000000,
-      rating: 'BBB+',
-      pd: 1.9,
-      lgd: 33,
-      expectedLoss: 301320,
-      sector: 'Telecommunications',
-      region: 'Europe'
-    },
-    {
-      customer: 'XYZ Corporation',
-      customerId: 'xyz-corporation',
-      exposure: 45000000,
-      rating: 'BBB',
-      pd: 2.1,
-      lgd: 35,
-      expectedLoss: 330750,
-      sector: 'Manufacturing',
-      region: 'North America'
-    },
-    {
-      customer: 'Real Estate Developers',
-      customerId: 'real-estate-dev',
-      exposure: 42000000,
-      rating: 'B',
-      pd: 7.2,
-      lgd: 52,
-      expectedLoss: 1574400,
-      sector: 'Real Estate',
-      region: 'North America'
-    }
-  ];
+  // Get top 5 customers by exposure from CustomerDataService
+  const allCustomers = CustomerDataService.getAllCustomers();
+  const data = allCustomers
+    .sort((a, b) => b.exposure - a.exposure)
+    .slice(0, 5)
+    .map(customer => ({
+      customer: customer.name,
+      customerId: customer.id,
+      exposure: customer.exposure,
+      rating: customer.rating,
+      pd: customer.pd,
+      lgd: customer.lgd,
+      expectedLoss: customer.expectedLoss,
+      sector: customer.sector,
+      region: customer.region
+    }));
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
