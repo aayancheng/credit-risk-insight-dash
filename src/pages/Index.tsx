@@ -37,7 +37,7 @@ const Index = () => {
               >
                 <Menu className="h-5 w-5" />
               </Button>
-              <h1 className="text-2xl font-bold text-gray-900">Credit Analytics Dashboard</h1>
+              <h1 className="text-2xl font-bold text-gray-900">Credit Analytics GPT</h1>
             </div>
             <div className="flex items-center space-x-4">
               <Badge variant="secondary" className="bg-green-100 text-green-800">

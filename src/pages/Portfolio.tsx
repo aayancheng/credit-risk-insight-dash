@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useCallback } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,8 @@ import { Search, Download, Filter } from "lucide-react";
 const Portfolio = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedRow, setSelectedRow] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   // Comprehensive portfolio data with 20 clients
   const portfolioData = [
@@ -497,6 +499,20 @@ const Portfolio = () => {
     return `${value.toFixed(1)}%`;
   };
 
+  const handleRowDoubleClick = (customerId: string) => {
+    navigate(`/customer/${customerId}`);
+  };
+
+  const handleRowClick = (customerId: string) => {
+    setSelectedRow(customerId);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent, customerId: string) => {
+    if (e.key === 'Enter') {
+      navigate(`/customer/${customerId}`);
+    }
+  };
+
   return (
     <div className="flex h-screen bg-background">
       <DashboardSidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
@@ -564,14 +580,37 @@ const Portfolio = () => {
                   </TableHeader>
                   <TableBody>
                     {filteredData.map((client) => (
-                      <TableRow key={client.id} className="hover:bg-muted/50 cursor-pointer">
+                      <TableRow 
+                        key={client.id} 
+                        className={`hover:bg-muted/50 cursor-pointer transition-colors duration-150 ${
+                          selectedRow === client.id ? 'bg-muted border-l-4 border-primary' : ''
+                        }`}
+                        onDoubleClick={() => handleRowDoubleClick(client.id)}
+                        onClick={() => handleRowClick(client.id)}
+                        onKeyDown={(e) => handleKeyDown(e, client.id)}
+                        tabIndex={0}
+                      >
                         <TableCell className="font-medium">
-                          <Link 
-                            to={`/customer/${client.id}`}
-                            className="text-primary hover:underline block"
-                          >
-                            {client.name}
-                          </Link>
+                          <div className="flex items-center justify-between">
+                            <Link 
+                              to={`/customer/${client.id}`}
+                              className="text-primary hover:underline block"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              {client.name}
+                            </Link>
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              className="ml-2 hover:bg-primary hover:text-primary-foreground transition-colors"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/customer/${client.id}`);
+                              }}
+                            >
+                              View Details
+                            </Button>
+                          </div>
                         </TableCell>
                         <TableCell className="font-mono">{formatCurrency(client.exposure)}</TableCell>
                         <TableCell>

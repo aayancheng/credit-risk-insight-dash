@@ -8,7 +8,7 @@ const KPICards = () => {
     {
       title: "Total Exposure",
       value: "$50,200,000",
-      change: "+2.4%",
+      change: "+5.4%",
       trend: "up",
       icon: DollarSign,
       color: "text-blue-600",
