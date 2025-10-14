@@ -60,6 +60,20 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
+## Sample data and database seeding
+
+The dashboard now generates its sample analytics data at runtime using a deterministic seed. This keeps the repository light while still
+ensuring every environment sees the same 100 demo clients.
+
+If you need a SQLite copy of the data (for example, to inspect it locally or test integrations), run:
+
+```sh
+npm run seed:clients
+```
+
+This command uses the shared generator to write a disposable `data/client_data.db` file. The database is ignored by Git, so rerun the
+command whenever you need a fresh copy.
+
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/51249a43-5be0-489a-911f-2ee83f93b75a) and click on Share -> Publish.
