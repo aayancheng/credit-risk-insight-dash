@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Local data artifacts
+data/*.db
+src/services/clientData.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
