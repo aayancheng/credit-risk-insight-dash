@@ -1,5 +1,7 @@
 
+import { useId, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 const RiskHeatmap = () => {
   const ratings = ["AAA", "AA", "A", "BBB", "BB"];
@@ -15,6 +17,11 @@ const RiskHeatmap = () => {
   ];
 
   const maxValue = Math.max(...heatmapData.flat());
+  const [activeCell, setActiveCell] = useState({ ratingIndex: 0, exposureIndex: 0 });
+  const activeValue = heatmapData[activeCell.ratingIndex]?.[activeCell.exposureIndex] ?? 0;
+  const activeRating = ratings[activeCell.ratingIndex] ?? ratings[0];
+  const activeExposure = exposureBands[activeCell.exposureIndex] ?? exposureBands[0];
+  const summaryId = useId();
 
   const getCellStyle = (value: number) => {
     const intensity = value / maxValue;
@@ -59,35 +66,60 @@ const RiskHeatmap = () => {
         <p className="text-sm text-gray-600">Exposure vs credit rating matrix with intensity-driven insights</p>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-50/60 shadow-inner">
-          <div className="grid grid-cols-[120px_repeat(5,_minmax(0,_1fr))] divide-x divide-slate-200/70 text-xs font-medium uppercase tracking-wide text-slate-500">
-            <div className="bg-white/80 px-3 py-3 text-left">Rating / Exposure</div>
-            {exposureBands.map((band) => (
-              <div key={band} className="bg-white/60 px-3 py-3 text-center">
-                {band}
-              </div>
-            ))}
-          </div>
-          <div className="divide-y divide-slate-200/70 text-sm">
-            {ratings.map((rating, ratingIndex) => (
-              <div key={rating} className="grid grid-cols-[120px_repeat(5,_minmax(0,_1fr))]">
-                <div className="flex items-center bg-white/80 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  {rating}
+        <div className="overflow-x-auto">
+          <div
+            className="min-w-[620px] overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-50/60 shadow-inner"
+            role="grid"
+            aria-label="Customer distribution by credit rating and exposure band"
+          >
+            <div className="grid grid-cols-[minmax(116px,_0.9fr)_repeat(5,_minmax(0,_1fr))] divide-x divide-slate-200/70 text-xs font-medium uppercase tracking-wide text-slate-500 md:grid-cols-[140px_repeat(5,_minmax(0,_1fr))]" role="row">
+              <div className="bg-white/80 px-3 py-3 text-left" role="columnheader">Rating / Exposure</div>
+              {exposureBands.map((band) => (
+                <div key={band} className="bg-white/60 px-3 py-3 text-center" role="columnheader">
+                  {band}
                 </div>
-                {heatmapData[ratingIndex].map((value, exposureIndex) => (
-                  <button
-                    type="button"
-                    key={`${rating}-${exposureIndex}`}
-                    className="flex min-h-[48px] items-center justify-center px-3 py-2 text-sm font-semibold transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-900/20"
-                    style={getCellStyle(value)}
-                    title={`${rating} rating, ${exposureBands[exposureIndex]}: ${value} customers`}
-                  >
-                    {value}
-                  </button>
-                ))}
-              </div>
-            ))}
+              ))}
+            </div>
+            <div className="divide-y divide-slate-200/70 text-sm">
+              {ratings.map((rating, ratingIndex) => (
+                <div key={rating} className="grid grid-cols-[minmax(116px,_0.9fr)_repeat(5,_minmax(0,_1fr))] md:grid-cols-[140px_repeat(5,_minmax(0,_1fr))]" role="row">
+                  <div className="flex items-center bg-white/80 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-500" role="rowheader">
+                    {rating}
+                  </div>
+                  {heatmapData[ratingIndex].map((value, exposureIndex) => (
+                    <button
+                      type="button"
+                      key={`${rating}-${exposureIndex}`}
+                      className={cn(
+                        "flex min-h-[48px] items-center justify-center px-3 py-2 text-sm font-semibold transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-slate-900/20",
+                        activeCell.ratingIndex === ratingIndex && activeCell.exposureIndex === exposureIndex && "ring-2 ring-slate-900/60 ring-offset-2 ring-offset-slate-50"
+                      )}
+                      style={getCellStyle(value)}
+                      title={`${rating} rating, ${exposureBands[exposureIndex]}: ${value} customers`}
+                      onClick={() => setActiveCell({ ratingIndex, exposureIndex })}
+                      onFocus={() => setActiveCell({ ratingIndex, exposureIndex })}
+                      aria-pressed={activeCell.ratingIndex === ratingIndex && activeCell.exposureIndex === exposureIndex}
+                      aria-label={`${value} customers with ${rating} rating in the ${exposureBands[exposureIndex]} exposure band`}
+                      aria-describedby={summaryId}
+                    >
+                      {value}
+                    </button>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
+        </div>
+
+        <div
+          id={summaryId}
+          role="status"
+          aria-live="polite"
+          className="rounded-xl bg-slate-900/5 px-4 py-3 text-sm text-slate-700"
+        >
+          <span className="font-semibold text-slate-900">{activeRating}</span> rating ·{" "}
+          <span className="font-semibold text-slate-900">{activeExposure}</span> exposure band —{" "}
+          {activeValue.toLocaleString()} customers in this segment.
         </div>
 
         <div className="flex flex-col gap-3 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">

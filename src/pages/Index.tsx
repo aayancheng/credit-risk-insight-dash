@@ -15,6 +15,7 @@ import RiskHeatmap from "@/components/RiskHeatmap";
 import TopExposuresTable from "@/components/TopExposuresTable";
 import TopClientsSpotlight from "@/components/TopClientsSpotlight";
 import { CustomerDataService } from "@/services/customerData";
+import { cn } from "@/lib/utils";
 
 const Index = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -65,9 +66,11 @@ const Index = () => {
       <DashboardSidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
 
       <div
-        className={`flex-1 transition-all duration-300 ml-0 ${
+        className={cn(
+          "flex-1 transition-all duration-300",
+          sidebarOpen ? "ml-64" : "ml-16",
           sidebarOpen ? "lg:ml-64" : "lg:ml-20"
-        }`}
+        )}
       >
         {/* Header */}
         <header className="bg-white border-b border-gray-200 px-6 py-4">
@@ -241,9 +244,9 @@ const Index = () => {
           </Card>
 
           {/* Analytics Layout */}
-          <div className="grid gap-6 xl:grid-cols-[2fr,1.1fr]" id="top-exposures">
+          <div className="grid gap-6 2xl:grid-cols-[minmax(0,2fr)_minmax(0,1.1fr)]" id="top-exposures">
             <div className="space-y-6">
-              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <div className="grid grid-cols-1 gap-6 2xl:grid-cols-2">
                 <CreditDistributionChart />
                 <RiskHeatmap />
               </div>
