@@ -89,20 +89,23 @@ const TopExposuresTable = () => {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <CardTitle className="text-lg">Top Exposures</CardTitle>
             <p className="text-sm text-gray-600">Highest risk customers by exposure amount</p>
           </div>
-          <Button variant="outline" size="sm">
-            <ExternalLink className="h-4 w-4 mr-2" />
-            Export
-          </Button>
+          <div className="flex items-center gap-2 text-xs text-gray-500">
+            <span className="hidden sm:inline text-gray-400">Sort to reprioritize reviews</span>
+            <Button variant="outline" size="sm" className="h-9">
+              <ExternalLink className="h-4 w-4 mr-2" />
+              Export
+            </Button>
+          </div>
         </div>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[720px] text-sm">
             <thead>
               <tr className="border-b">
                 <th className="text-left py-3 px-2">
@@ -176,9 +179,9 @@ const TopExposuresTable = () => {
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y">
               {sortedData.map((row, index) => (
-                <tr key={index} className="border-b hover:bg-gray-50 transition-colors">
+                <tr key={index} className="transition-colors hover:bg-gray-50">
                   <td className="py-3 px-2">
                     <Link to={`/customer/${row.customerId}`} className="block hover:bg-gray-50 transition-colors">
                       <div className="font-medium text-gray-900 hover:text-blue-600">{row.customer}</div>
@@ -189,7 +192,7 @@ const TopExposuresTable = () => {
                     {formatCurrency(row.exposure)}
                   </td>
                   <td className="py-3 px-2 text-center">
-                    <Badge className={getRatingColor(row.rating)}>
+                    <Badge className={`${getRatingColor(row.rating)} px-3 py-1 text-xs font-semibold`}>
                       {row.rating}
                     </Badge>
                   </td>
